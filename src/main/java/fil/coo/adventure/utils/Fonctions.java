@@ -12,8 +12,7 @@ public class Fonctions {
 
     public static void savePlayerInfo(Player player) throws IOException {
         try (FileWriter writer = new FileWriter(path)) {
-            writer.write(player.getName()+"-"+player.getLifePoints()+"-"+player.getStrength()+"-"
-                         +player.getDefense()+"-"+player.getGold()+"-"+player.getInventoryNames());
+            writer.write(player.getName()+"-"+player.getLifePoints()+"-"+player.getStrength()+"-"+player.getDefense()+"-"+player.getGold()+"-"+player.getInventoryNames()+"-"+player.getArmorsStatus()+"-"+player.getWeaponsStatus());
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -30,12 +29,7 @@ public class Fonctions {
         reader.close();
 
         values = line.split("-");
-        if (values.length>5) {
-            player = new Player(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]), Integer.parseInt(values[3]), Integer.parseInt(values[4]), values[5]);
-        } else {
-            player = new Player(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]), Integer.parseInt(values[3]), Integer.parseInt(values[4]), "");
-        }
-
+        player = new Player(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]), Integer.parseInt(values[3]), Integer.parseInt(values[4]), values[5], values[6], values[7]);
         return player;
     }
 
@@ -72,7 +66,8 @@ public class Fonctions {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()){
                 String[] elementPlayer = scanner.nextLine().split("-");
-                player = new Player(elementPlayer[0], Integer.parseInt(elementPlayer[1]), Integer.parseInt(elementPlayer[2]), Integer.parseInt(elementPlayer[3]), Integer.parseInt(elementPlayer[4]), "");
+                player = new Player(elementPlayer[0], Integer.parseInt(elementPlayer[1]), Integer.parseInt(elementPlayer[2]), Integer.parseInt(elementPlayer[3]),
+                                    Integer.parseInt(elementPlayer[4]), elementPlayer[5], elementPlayer[6], elementPlayer[7]);
                 allPlayers.add(player);
             }
             scanner.close();
