@@ -1,7 +1,6 @@
 package fil.coo.adventure.entities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -53,59 +52,47 @@ public class Player extends GameCharacters {
         }
     }
 
-    public void askToUseItem() {  
-        ArrayList<Item> consoItems = inventory.getConsoItems();
-        ArrayList<Item> EquipItems = inventory.getEquipItems();
+    public void askToUseItem() {
+        ArrayList<Item> consoItems = inventory.getItems();
         int choix = 0;
         String possible = "";
-        for (int i = 0; i < consoItems.size()+EquipItems.size(); i++) {
-            possible+=i;
+        for (int i = 0; i < consoItems.size(); i++) {
+            possible += i;
         }
-        possible+="q";
+        if (possible.isEmpty()) {
+        System.out.println("Vous n'avez rien dans votre inventaire.");
+        return;
+        }
+        possible += "q";
 
         System.out.println("Voulez avez en votre possession les consommables suivants :");
-        for (int i = 0; i < consoItems.size(); i++) {
-            System.out.println("choix "+i+") "+consoItems.get(i).getName());
-            choix++;
-        }
-
-        System.out.println("Voulez avez en votre possession les équipements suivants :");
-        for (int i = 0; i < EquipItems.size(); i++) {
-            System.out.println("choix"+i+") "+EquipItems.get(i).getName());
-            choix++;
-        }
-
-        Scanner sc = new Scanner(System.in);
         String input;
-
-        do{
-            System.out.println("Saisissez votre choix (q pour quitter) :");
+        Scanner sc = new Scanner(System.in);
+        do {
+            for (int i = 0; i < consoItems.size(); i++) {
+                System.out.println("choix " + i + ") " + consoItems.get(i).getName());
+                choix++;
+            }
+            System.out.println("Saisissez votre choix (q pour quitter):");
             input = sc.nextLine().toLowerCase();
-        } while (possible.indexOf(input.charAt(0))==-1);
+        } while (possible.indexOf(input.charAt(0)) == -1);
 
         if (input.indexOf("q") == 0) {
             System.out.println("Vous n'utilisez aucun item de votre inventaire.");
         } else {
             choix = Integer.parseInt(input);
-            if (choix > consoItems.size()-1) {
-                EquipItems.get(choix-consoItems.size()-1).isUsedBy(this);
-            } else {
-                consoItems.get(choix).isUsedBy(this);
-            }
+            System.out.println("Vous utilisez une " + consoItems.get(choix).getName());
+            consoItems.get(choix).isUsedBy(this);
         }
     }
 
-	public String getName(){
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void addItem(Item item) {
-        if (inventory.getConsoItems().size()+inventory.getEquipItems().size() < Constant.MAX_ITEMS) {
-            if (Arrays.stream(Constant.CONSOMMABLE_ITEM).anyMatch(w -> w.contains(item.getName()))) {
-                this.inventory.getConsoItems().add(item);
-            } else {
-                this.inventory.getEquipItems().add(item);
-            }
+    public void addItem(Item item) {
+        if (inventory.getItems().size() < Constant.MAX_ITEMS) {
+            this.inventory.getItems().add(item);
         }
     }
 
@@ -121,11 +108,11 @@ public class Player extends GameCharacters {
         return itemsNames;
     }
 
-	public int getMaxLifePoints() {
+    public int getMaxLifePoints() {
         return this.maxLifePoints;
     }
 
-	public void setLifePoints(int lp) {
+    public void setLifePoints(int lp) {
         this.LifePoints = lp;
     }
 
