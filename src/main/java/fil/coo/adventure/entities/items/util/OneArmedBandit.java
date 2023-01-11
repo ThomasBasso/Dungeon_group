@@ -28,7 +28,7 @@ public class OneArmedBandit{
             } // Augmentation de Force 
             else if (symbol1.equals("épée")) {
                 int newStrength = (int)(player.getStrength() * 1.5);
-                player.setStrength(newStrength);
+                player.addStrength(newStrength);
                 System.out.println("Votre force a augmentée de 50% de façon permanente !");
             } //Gagne de l'or
             else if (symbol1.equals("or")) {
