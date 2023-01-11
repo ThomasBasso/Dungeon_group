@@ -4,6 +4,7 @@ public abstract class GameCharacters {
 	protected int LifePoints;
 	protected int strength;
 	protected int gold;
+	protected String name;
 	
 	public GameCharacters() {
 		this.LifePoints = 0;
