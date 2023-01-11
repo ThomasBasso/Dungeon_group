@@ -24,9 +24,9 @@ public class Inventory {
 				case "Potion de force":
 					this.inventoryConsommable.add(new StrengthPotion());
 					break;
-				case "Coffre":
-					this.inventoryConsommable.add(new GoldChest());
-					break;
+				// case "Coffre":
+				//	this.inventoryConsommable.add(new GoldChest());
+				//	break;
                 // case "Lotterie":
 				// 	this.inventory.add(new OneArmedBandit());
 				// 	break;
