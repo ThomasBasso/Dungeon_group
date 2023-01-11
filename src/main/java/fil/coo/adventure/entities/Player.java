@@ -13,6 +13,7 @@ public class Player extends GameCharacters {
     private int boostDuration;
     private int defense;
 	private ArrayList<Item> inventory = new ArrayList<>();
+    private ArrayList<Poison> negativeStatuses;
 
 	public Player(String name, int life, int strenght, int defense, int gold, String items) {
 		this.name = name;
@@ -52,13 +53,13 @@ public class Player extends GameCharacters {
 		this.inventory = inventory;
 	}
 
-	public String getInventoryNames() {
+	/*public String getInventoryNames() {
 		String itemsNames = "";
 		for (Item item : inventory) {
 			itemsNames += item.getName()+",";
 		}
 		return itemsNames;
-	}
+	}*/
 
 	public int getMaxLifePoints() {
         return this.maxLifePoints;
@@ -121,4 +122,21 @@ public class Player extends GameCharacters {
 	public void setDefense(int defense) {
 		this.defense = defense;
 	}
+
+    public void addNegativeStatus(Poison status) {
+        negativeStatuses.add(status);
+    }
+    
+    public void removeNegativeStatus() {
+        negativeStatuses.clear();
+    }
+    
+    public void applyNegativeStatuses() {
+        for (Poison status : negativeStatuses) {
+            status.tick(this);
+            if (status.getDuration() == 0) {
+                negativeStatuses.remove(status);
+            }
+        }
+    }
 }
