@@ -15,7 +15,15 @@ public class Player extends GameCharacters {
     private int defense;
     private ArrayList<Poison> negativeStatuses;
     private Inventory inventory;
-	
+
+    /**
+     * Permet de créer un joueur uniquement en lui attribuant un nom
+     * @param name le nom du joueur
+     */
+    public Player(String name) {
+        super(100, 10);
+        this.name = name;
+    }
 
     public Player(String name, int life, int strenght, int defense, int gold, String items) {
 		this.name = name;
@@ -74,11 +82,12 @@ public class Player extends GameCharacters {
 	}
 
 	public void addItem(Item item) {
-        if (inventory.getConsoItems().size()+inventory.getEquipItems().size() < Constant.MAX_ITEMS)
-        if (Arrays.stream(Constant.CONSOMMABLE_ITEM).anyMatch(w -> w.contains(item.getName()))) {
-            this.inventory.getConsoItems().add(item);
-        } else {
-            this.inventory.getEquipItems().add(item);
+        if (inventory.getConsoItems().size()+inventory.getEquipItems().size() < Constant.MAX_ITEMS) {
+            if (Arrays.stream(Constant.CONSOMMABLE_ITEM).anyMatch(w -> w.contains(item.getName()))) {
+                this.inventory.getConsoItems().add(item);
+            } else {
+                this.inventory.getEquipItems().add(item);
+            }
         }
 	}
 
