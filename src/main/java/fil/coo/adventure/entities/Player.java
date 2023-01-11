@@ -1,13 +1,63 @@
 package fil.coo.adventure.entities;
 
+import java.util.ArrayList;
+
+import fil.coo.adventure.entities.items.Item;
+import fil.coo.adventure.entities.items.util.GoldChest;
+import fil.coo.adventure.entities.items.util.LifePotion;
+import fil.coo.adventure.entities.items.util.StrengthPotion;
+
 public class Player extends GameCharacters {
     private int maxLifePoints;
     private int originalStrength;
     private int boostDuration;
     private int defense;
+	private ArrayList<Item> inventory = new ArrayList<>();
 
-	public Player() {
-		super(100, 10);
+	public Player(String name, int life, int strenght, int defense, int gold, String items) {
+		this.name = name;
+		this.LifePoints = life;
+		this.strength = strenght;
+		this.defense = defense;
+		this.gold = gold;
+
+		String[] itemsNames = items.split(",");
+		
+		for (String item : itemsNames) {
+			switch (item) {
+				case "Potion de vie":
+					this.inventory.add(new LifePotion());
+					break;
+				case "Potion de force":
+					this.inventory.add(new StrengthPotion());
+					break;
+				case "Gold Chest":
+					this.inventory.add(new GoldChest());
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	public String getName(){
+		return this.name;
+	}
+
+	public ArrayList<Item> getInventory() {
+		return this.inventory;
+	}
+
+	public void setInventory(ArrayList<Item> inventory) {
+		this.inventory = inventory;
+	}
+
+	public String getInventoryNames() {
+		String itemsNames = "";
+		for (Item item : inventory) {
+			itemsNames += item.getName()+",";
+		}
+		return itemsNames;
 	}
 
 	public int getMaxLifePoints() {
@@ -67,4 +117,8 @@ public class Player extends GameCharacters {
     public int getDefense() {
         return defense;
     }
+	
+	public void setDefense(int defense) {
+		this.defense = defense;
+	}
 }
