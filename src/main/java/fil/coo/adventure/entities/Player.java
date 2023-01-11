@@ -14,6 +14,7 @@ public class Player extends GameCharacters {
     private int boostDuration;
     private int defense;
     private ArrayList<Poison> negativeStatuses;
+    private Inventory inventory;
 	
 
     public Player(String name, int life, int strenght, int defense, int gold, String items) {
