@@ -6,9 +6,9 @@ import fil.coo.adventure.entities.items.Item;
 public class LifePotion extends Item {
 
 	@Override
-	public void isUsedBy(Player player) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void isUsedBy(Player player) {
+        int lifeToAdd = 30;
+        player.setLifePoints(Math.min(player.getMaxLifePoints()+lifeToAdd, player.getMaxLifePoints()));
+    }
 
 }
