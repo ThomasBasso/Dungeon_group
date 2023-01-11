@@ -8,7 +8,12 @@ import java.util.Random;
 
 public class OneArmedBandit extends Item {
 
-    @Override
+    public OneArmedBandit() {
+		super("Boite mystère", 0, 0, 0, 0, 40);
+		//TODO Auto-generated constructor stub
+	}
+
+	@Override
     public void isUsedBy(Player player) {
         Random rand = new Random();
         String[] symbols = {"coeur", "éclair", "épée", "or", "poison"};

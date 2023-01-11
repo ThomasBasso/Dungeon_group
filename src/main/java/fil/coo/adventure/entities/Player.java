@@ -1,65 +1,105 @@
 package fil.coo.adventure.entities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
+import fil.coo.adventure.entities.items.Inventory;
 import fil.coo.adventure.entities.items.Item;
-import fil.coo.adventure.entities.items.util.GoldChest;
-import fil.coo.adventure.entities.items.util.LifePotion;
-import fil.coo.adventure.entities.items.util.StrengthPotion;
+import fil.coo.adventure.utils.Constant;
 
 public class Player extends GameCharacters {
-    private int maxLifePoints;
+    private int maxLifePoints = Constant.MAX_LIFE;
     private int originalStrength;
     private int boostDuration;
     private int defense;
-	private ArrayList<Item> inventory = new ArrayList<>();
     private ArrayList<Poison> negativeStatuses;
+	
 
-	public Player(String name, int life, int strenght, int defense, int gold, String items) {
+    public Player(String name, int life, int strenght, int defense, int gold, String items) {
 		this.name = name;
 		this.LifePoints = life;
 		this.strength = strenght;
 		this.defense = defense;
 		this.gold = gold;
 
-		String[] itemsNames = items.split(",");
-		
-		for (String item : itemsNames) {
-			switch (item) {
-				case "Potion de vie":
-					this.inventory.add(new LifePotion());
-					break;
-				case "Potion de force":
-					this.inventory.add(new StrengthPotion());
-					break;
-				case "Gold Chest":
-					this.inventory.add(new GoldChest());
-					break;
-				default:
-					break;
-			}
-		}
+		this.inventory = new Inventory(items);
 	}
+
+    public void askToUseItem() {  
+        ArrayList<Item> consoItems = inventory.getConsoItems();
+        ArrayList<Item> EquipItems = inventory.getEquipItems();
+        int choix = 0;
+        String possible = "";
+        for (int i = 0; i < consoItems.size()+EquipItems.size(); i++) {
+            possible+=i;
+        }
+        possible+="q";
+
+        System.out.println("Voulez avez en votre possession les consommables suivants :");
+        for (int i = 0; i < consoItems.size(); i++) {
+            System.out.println("choix "+i+") "+consoItems.get(i).getName());
+            choix++;
+        }
+
+        System.out.println("Voulez avez en votre possession les équipements suivants :");
+        for (int i = 0; i < EquipItems.size(); i++) {
+            System.out.println("choix"+i+") "+EquipItems.get(i).getName());
+            choix++;
+        }
+
+        Scanner sc = new Scanner(System.in);
+        String input;
+
+        do{
+            System.out.println("Saisissez votre choix (q pour quitter) :");
+            input = sc.nextLine().toLowerCase();
+        } while (possible.indexOf(input.charAt(0))==-1);
+
+        if (input.indexOf("q") == 0) {
+            System.out.println("Vous n'utilisez aucun item de votre inventaire.");
+        } else {
+            choix = Integer.parseInt(input);
+            if (choix > consoItems.size()-1) {
+                EquipItems.get(choix-consoItems.size()-1).isUsedBy(this);
+            } else {
+                consoItems.get(choix).isUsedBy(this);
+            }
+        }
+    }
 
 	public String getName(){
 		return this.name;
 	}
 
-	public ArrayList<Item> getInventory() {
-		return this.inventory;
+	public void addItem(Item item) {
+        if (inventory.getConsoItems().size()+inventory.getEquipItems().size() < Constant.MAX_ITEMS)
+        if (Arrays.stream(Constant.CONSOMMABLE_ITEM).anyMatch(w -> w.contains(item.getName()))) {
+            this.inventory.getConsoItems().add(item);
+        } else {
+            this.inventory.getEquipItems().add(item);
+        }
 	}
 
-	public void setInventory(ArrayList<Item> inventory) {
-		this.inventory = inventory;
+    public void dropItem(Item item) {
+		if (Arrays.stream(Constant.CONSOMMABLE_ITEM).anyMatch(w -> w.contains(item.getName()))) {
+            this.inventory.getConsoItems().remove(item);
+        } else {
+            this.inventory.getEquipItems().remove(item);
+        }
 	}
 
-	/*public String getInventoryNames() {
+	public String getInventoryNames() {
 		String itemsNames = "";
-		for (Item item : inventory) {
+		for (Item item : inventory.getConsoItems()) {
 			itemsNames += item.getName()+",";
 		}
+        for (Item item : inventory.getEquipItems()) {
+			itemsNames += item.getName()+",";
+		}
+
 		return itemsNames;
-	}*/
+	}
 
 	public int getMaxLifePoints() {
         return this.maxLifePoints;
@@ -138,5 +178,9 @@ public class Player extends GameCharacters {
                 negativeStatuses.remove(status);
             }
         }
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }
