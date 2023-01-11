@@ -22,17 +22,17 @@ public abstract class Monster extends GameCharacters {
 	 */
 	public static ArrayList<Monster> getRandomListMonsters(Dungeon.TYPE level, int nbMonster){
 		ArrayList<Monster> myListMonsters = new ArrayList<>();
-		ArrayList<Monster> default_list = new ArrayList<>();
-		default_list.add(new Slime());
-		default_list.add(new ZombiesHord());
-		default_list.add(new Goblin());
-		ArrayList<Monster> medium_list = new ArrayList<>(default_list);
-		medium_list.add(new Looter());
-		medium_list.add(new Kraken());
-		medium_list.add(new Orc());
-		ArrayList<Monster> hard_list = new ArrayList<>(medium_list);
-		hard_list.add(new Dragon());
-		hard_list.add(new Balrog());
+		ArrayList<Class> default_list = new ArrayList<>();
+		default_list.add(Slime.class);
+		default_list.add(ZombiesHord.class);
+		default_list.add(Goblin.class);
+		ArrayList<Class> medium_list = new ArrayList<>(default_list);
+		medium_list.add(Looter.class);
+		medium_list.add(Kraken.class);
+		medium_list.add(Orc.class);
+		ArrayList<Class> hard_list = new ArrayList<>(medium_list);
+		hard_list.add(Dragon.class);
+		hard_list.add(Balrog.class);
 		switch (level){
 			case EASY -> myListMonsters = getRandomMonsterFrom(default_list,nbMonster);
 			case MEDIUM -> myListMonsters = getRandomMonsterFrom(medium_list,nbMonster);
@@ -46,10 +46,14 @@ public abstract class Monster extends GameCharacters {
 	 * @param monsterArrayList la liste contenant les monstres souhaitaient
 	 * @return un monstre au hasard
 	 */
-	private static Monster getRandomMonster(ArrayList<Monster> monsterArrayList){
+	private static Monster getRandomMonster(ArrayList<Class> monsterArrayList){
 		int nbElement = monsterArrayList.size();
 		int index = (int) Math.floor(Math.random() * nbElement);
-		return monsterArrayList.get(index);
+		try {
+			return (Monster) monsterArrayList.get(index).newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -58,7 +62,7 @@ public abstract class Monster extends GameCharacters {
 	 * @param nbMonster le nombre de monstres souhaité
 	 * @return une liste composée de nbMonster appartenant à la liste defaultList
 	 */
-	private static ArrayList<Monster> getRandomMonsterFrom(ArrayList<Monster> defaultList, int nbMonster) {
+	private static ArrayList<Monster> getRandomMonsterFrom(ArrayList<Class> defaultList, int nbMonster) {
 		ArrayList<Monster> resultList = new ArrayList<>();
 		for (int i = 0; i < nbMonster; i++) {
 			resultList.add(getRandomMonster(defaultList));
