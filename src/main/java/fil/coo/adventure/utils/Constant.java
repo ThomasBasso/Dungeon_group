@@ -9,5 +9,6 @@ public final class Constant {
     public static final int LIFE_POTION = 30;
     public static final int MAX_LIFE = 100;
     public static final int STRENGHT_POTION = 25;
+    public static final int STRENGHT_POTION_DURATION = 3;
     public static final String[] SYMBOLES = {"coeur", "épée", "or", "poison"};
 }

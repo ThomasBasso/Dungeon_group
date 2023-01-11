@@ -21,6 +21,7 @@ public class Player extends GameCharacters {
 
     /**
      * Permet de créer un joueur uniquement en lui attribuant un nom
+     * 
      * @param name le nom du joueur
      */
     public Player(String name) {
@@ -28,13 +29,14 @@ public class Player extends GameCharacters {
         this.name = name;
     }
 
-    public Player(String name, int life, int strenght, int defense, int gold, String items, String armor, String weapon) {
-		this.name = name;
-		this.LifePoints = life;
-		this.strength = strenght;
-		this.defense = defense;
-		this.gold = gold;
-		this.inventory = new Inventory(items);
+    public Player(String name, int life, int strenght, int defense, int gold, String items, String armor,
+            String weapon) {
+        this.name = name;
+        this.LifePoints = life;
+        this.strength = strenght;
+        this.defense = defense;
+        this.gold = gold;
+        this.inventory = new Inventory(items);
 
         String[] armorInfos = armor.split(",");
         int i = 0;
@@ -49,7 +51,7 @@ public class Player extends GameCharacters {
             weaponEquiped.put(weaponItem, Boolean.parseBoolean(weaponInfos[i]));
             i++;
         }
-	}
+    }
 
     public void askToUseItem() {  
         ArrayList<Item> consoItems = inventory.getConsoItems();
@@ -105,27 +107,19 @@ public class Player extends GameCharacters {
                 this.inventory.getEquipItems().add(item);
             }
         }
-	}
+    }
 
     public void dropItem(Item item) {
-		if (Arrays.stream(Constant.CONSOMMABLE_ITEM).anyMatch(w -> w.contains(item.getName()))) {
-            this.inventory.getConsoItems().remove(item);
-        } else {
-            this.inventory.getEquipItems().remove(item);
+        this.inventory.getItems().remove(item);
+    }
+
+    public String getInventoryNames() {
+        String itemsNames = "";
+        for (Item item : inventory.getItems()) {
+            itemsNames += item.getName() + ",";
         }
-	}
-
-	public String getInventoryNames() {
-		String itemsNames = "";
-		for (Item item : inventory.getConsoItems()) {
-			itemsNames += item.getName()+",";
-		}
-        for (Item item : inventory.getEquipItems()) {
-			itemsNames += item.getName()+",";
-		}
-
-		return itemsNames;
-	}
+        return itemsNames;
+    }
 
 	public int getMaxLifePoints() {
         return this.maxLifePoints;
@@ -136,16 +130,16 @@ public class Player extends GameCharacters {
     }
 
     public void addStrength(int strenght) {
-        this.originalStrength+=this.strength;
-        this.strength+=strenght;
+        this.originalStrength += this.strength;
+        this.strength += strenght;
     }
 
-	public void setStrength(int strength) {
+    public void setStrength(int strength) {
         this.originalStrength = this.strength;
         this.strength = strength;
     }
 
-	public void decrementBoostDuration() {
+    public void decrementBoostDuration() {
         if (boostDuration > 0) {
             boostDuration--;
         }
@@ -154,7 +148,7 @@ public class Player extends GameCharacters {
         }
     }
 
-	public void setBoostDuration(int duration) {
+    public void setBoostDuration(int duration) {
         this.boostDuration = duration;
     }
 
@@ -163,17 +157,17 @@ public class Player extends GameCharacters {
     }
 
     public void addDefense(int defense) {
-		this.defense+=defense;
-	}
+        this.defense += defense;
+    }
 
     public void addNegativeStatus(Poison status) {
         negativeStatuses.add(status);
     }
-    
+
     public void removeNegativeStatus() {
         negativeStatuses.clear();
     }
-    
+
     public void applyNegativeStatuses() {
         for (Poison status : negativeStatuses) {
             status.tick(this);
@@ -198,7 +192,7 @@ public class Player extends GameCharacters {
     public String getArmorsStatus() {
         String armorsStatus = "";
         for (Boolean armor : getArmorEquiped().values()) {
-            armorsStatus+=armor.toString()+",";
+            armorsStatus += armor.toString() + ",";
         }
         System.out.println("les armures status : " + armorsStatus);
         return armorsStatus;
@@ -207,7 +201,7 @@ public class Player extends GameCharacters {
     public String getWeaponsStatus() {
         String weaponsStatus = "";
         for (Boolean weapon : getWeaponEquiped().values()) {
-            weaponsStatus+=weapon.toString()+",";
+            weaponsStatus += weapon.toString() + ",";
         }
         System.out.println("les weapons status : " + weaponsStatus);
         return weaponsStatus;
