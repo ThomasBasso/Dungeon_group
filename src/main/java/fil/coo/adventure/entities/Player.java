@@ -2,6 +2,7 @@ package fil.coo.adventure.entities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import fil.coo.adventure.entities.items.Inventory;
@@ -15,6 +16,8 @@ public class Player extends GameCharacters {
     private int defense;
     private ArrayList<Poison> negativeStatuses;
     private Inventory inventory;
+    private HashMap<String, Boolean> armorEquiped = new HashMap<>();
+    private HashMap<String, Boolean> weaponEquiped = new HashMap<>();
 
     /**
      * Permet de créer un joueur uniquement en lui attribuant un nom
@@ -25,14 +28,27 @@ public class Player extends GameCharacters {
         this.name = name;
     }
 
-    public Player(String name, int life, int strenght, int defense, int gold, String items) {
+    public Player(String name, int life, int strenght, int defense, int gold, String items, String armor, String weapon) {
 		this.name = name;
 		this.LifePoints = life;
 		this.strength = strenght;
 		this.defense = defense;
 		this.gold = gold;
-
 		this.inventory = new Inventory(items);
+
+        String[] armorInfos = armor.split(",");
+        int i = 0;
+        for (String armorItem : Constant.ARMOR) {
+            armorEquiped.put(armorItem, Boolean.parseBoolean(armorInfos[i]));
+            i++;
+        }
+
+        String[] weaponInfos = weapon.split(",");
+        i = 0;
+        for (String weaponItem : Constant.WEAPON) {
+            weaponEquiped.put(weaponItem, Boolean.parseBoolean(weaponInfos[i]));
+            i++;
+        }
 	}
 
     public void askToUseItem() {  
@@ -119,6 +135,11 @@ public class Player extends GameCharacters {
         this.LifePoints = lp;
     }
 
+    public void addStrength(int strenght) {
+        this.originalStrength+=this.strength;
+        this.strength+=strenght;
+    }
+
 	public void setStrength(int strength) {
         this.originalStrength = this.strength;
         this.strength = strength;
@@ -137,40 +158,12 @@ public class Player extends GameCharacters {
         this.boostDuration = duration;
     }
 
-    public void equipArmor(String piece) {
-        int armorDefense = 0;
-
-        switch (piece) {
-            case "Gauntlets":
-                armorDefense = 4;
-                break;
-            case "Helmet":
-                armorDefense = 6;
-                break;
-            case "Breast-plate":
-                armorDefense = 12;
-                break;
-            case "Trousers":
-                armorDefense = 10;
-                break;
-            case "Boots":
-                armorDefense = 8;
-                break;
-            default:
-                System.out.println("Pièce d'armure non valide");
-                return;
-        }
-//TODO : Ajouter la méthode Drop pour modifier l'armure équipée
-        defense += armorDefense;
-        System.out.println("Vous vous équipez de " + piece + " qui vous donne " + armorDefense + " points de défense supplémentaires.");
-    }
-
     public int getDefense() {
         return defense;
     }
-	
-	public void setDefense(int defense) {
-		this.defense = defense;
+
+    public void addDefense(int defense) {
+		this.defense+=defense;
 	}
 
     public void addNegativeStatus(Poison status) {
@@ -192,5 +185,31 @@ public class Player extends GameCharacters {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public HashMap<String, Boolean> getWeaponEquiped() {
+        return weaponEquiped;
+    }
+
+    public HashMap<String, Boolean> getArmorEquiped() {
+        return armorEquiped;
+    }
+
+    public String getArmorsStatus() {
+        String armorsStatus = "";
+        for (Boolean armor : getArmorEquiped().values()) {
+            armorsStatus+=armor.toString()+",";
+        }
+        System.out.println("les armures status : " + armorsStatus);
+        return armorsStatus;
+    }
+
+    public String getWeaponsStatus() {
+        String weaponsStatus = "";
+        for (Boolean weapon : getWeaponEquiped().values()) {
+            weaponsStatus+=weapon.toString()+",";
+        }
+        System.out.println("les weapons status : " + weaponsStatus);
+        return weaponsStatus;
     }
 }
