@@ -1,23 +1,16 @@
 package fil.coo.adventure;
 
 import fil.coo.adventure.entities.*;
-import fil.coo.adventure.entities.items.Item;
 import fil.coo.adventure.places.*;
-import fil.coo.adventure.places.directions.*;
-import fil.coo.adventure.entities.monsters.*;
 import fil.coo.adventure.utils.Fonctions;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AdventureGame {
-	private Room currentRoom;
-	private Player player;
+	private final Player player;
 	private Dungeon dungeon;
-	
-	public AdventureGame(Room startingRoom) {
-		this.currentRoom = startingRoom;
-	}
+	private Room actualRoom;
 
 	/**
 	 * Permet de créer un nouvel adventureGame avec un nouveau joueur
@@ -28,37 +21,27 @@ public class AdventureGame {
 		String name = this.isNamePlayer();
 		this.player = new Player(name);
 		this.dungeon =new Dungeon(this.player);
+		this.actualRoom = new Room(this.dungeon);
+
 	}
 
 	/**
 	 * Permet de créer une adventureGame lorsque l'on connait le joueur
 	 * @param player le joueur
 	 */
-	public AdventureGame(Player player){
+	public AdventureGame(Player player) {
 		this.player = player;
 		this.dungeon = new Dungeon(this.player);
+		this.actualRoom = new Room(this.dungeon);
 	}
 
-
-
-	public Room currentRoom() {
-		return this.currentRoom;
-	}
-	
 	public Player getPlayer() {
 		return this.player;
 	}
 
-	public Dungeon getDungeon() {
-		return dungeon;
+	public Room getActualRoom() {
+		return actualRoom;
 	}
-
-	public void play(Player player) {
-		while(!this.isFinished()) {
-			
-		}
-	}
-
 
 	/**
 	 * Permet de créer une aventure ou d'en continuer une ancienne selon l'envi du joueur
@@ -91,7 +74,9 @@ public class AdventureGame {
 			}
 			else{
 				int index  = Integer.parseInt(result) - diff;
-				return new AdventureGame(playersList.get(index));
+				Player player1 = playersList.get(index);
+				Fonctions.removeLine(player1);
+				return new AdventureGame(player1);
 			}
 		}
 		else
@@ -114,6 +99,10 @@ public class AdventureGame {
 		return result;
 	}
 
+	/**
+	 * Permet de récupérer la liste de tous les noms de joueur en majuscule
+	 * @return la liste des noms de joueurs en majuscule
+	 */
 	private ArrayList<String> recoverAllPlayerNameUpperCase() {
 		ArrayList<String> result = new ArrayList<>();
 		ArrayList<Player> allPlayers = Fonctions.getAllGameSave();
@@ -126,10 +115,15 @@ public class AdventureGame {
 	 * Permet de lancer la partie après le choix du joueur
 	 */
 	protected void runGame() {
-		this.dungeon.goToDungeon();
-		//TODO : creer la room
-		System.out.println(this.player.getName());
-		this.optionEndDungeon(this.dungeon.getNextLevel());
+		System.out.println("\nBienvenu dans le donjon " + this.dungeon.getActual_level());
+		do {
+			this.actualRoom.chooseRoom();
+		} while (!this.actualRoom.isLose() && !this.actualRoom.donjonFinish() && !this.actualRoom.isStopGame());
+
+		if (this.actualRoom.isLose() || this.actualRoom.isStopGame())
+			optionEndGame();
+		if (this.actualRoom.donjonFinish())
+			this.optionEndDungeon(this.dungeon.getNextLevel());
 	}
 
 	/**
@@ -145,6 +139,7 @@ public class AdventureGame {
 			switch (value) {
 				case "1" -> {
 					this.dungeon = new Dungeon(this.player, nextLevel);
+					this.actualRoom.initializeNeighbour();
 					this.runGame();
 				}
 				case "2" -> this.optionEndGame();
@@ -185,20 +180,6 @@ public class AdventureGame {
 			System.out.println("Au revoir " + new String(Character.toChars(0x1F44B)));
 
 	}
-	
-	public void addMonster(Monster monster, Room room) {
-		room.addMonster(monster);
-	}
-	
-	public void addItem(Item item, Room room) {
-		room.addItem(item);
-	}
-	
-	public boolean isFinished() {
-		return this.player.getLifePoints() > 0 && this.currentRoom.isExit() && this.currentRoom.getMonsters().isEmpty();
-	}
-	
-	public void playerMoveTo(Direction direction) {
-		this.currentRoom = this.currentRoom.getNeighbour(direction);
-	}
+
+
 }
