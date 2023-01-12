@@ -7,6 +7,7 @@ import java.util.Scanner;
 import fil.coo.adventure.entities.items.Inventory;
 import fil.coo.adventure.entities.items.Item;
 import fil.coo.adventure.utils.Constant;
+import fil.coo.adventure.utils.Fonctions;
 
 public class Player extends GameCharacters {
     private int maxLifePoints = Constant.MAX_LIFE;
@@ -24,23 +25,32 @@ public class Player extends GameCharacters {
      * @param name le nom du joueur
      */
     public Player(String name) {
-        super(100, 10);
-        this.name = name;
+        super(name, 100, 10, 20);
+        // Player starts a game with one LifePotion
+        this.inventory = new Inventory("Potion de vie");
+
+        for (String armorItem : Constant.ARMOR) {
+            armorEquiped.put(armorItem, false);
+        }
+
+        for (String weaponItem : Constant.WEAPON) {
+            weaponEquiped.put(weaponItem, false);
+        }
     }
 
     public Player(String name, int life, int strenght, int defense, int gold, String items, String armor,
             String weapon) {
-        this.name = name;
-        this.LifePoints = life;
-        this.strength = strenght;
+        super(name, life, strenght, gold);
         this.defense = defense;
-        this.gold = gold;
         this.inventory = new Inventory(items);
 
         String[] armorInfos = armor.split(",");
         int i = 0;
         for (String armorItem : Constant.ARMOR) {
             armorEquiped.put(armorItem, Boolean.parseBoolean(armorInfos[i]));
+            if (armorItem=="true") {
+                addDefense(Fonctions.getArmorFromObject(armorItem));
+            }
             i++;
         }
 
@@ -48,6 +58,9 @@ public class Player extends GameCharacters {
         i = 0;
         for (String weaponItem : Constant.WEAPON) {
             weaponEquiped.put(weaponItem, Boolean.parseBoolean(weaponInfos[i]));
+            if (weaponItem=="true") {
+                addStrength(Fonctions.getStrengthFromObject(weaponItem));
+            }
             i++;
         }
     }
