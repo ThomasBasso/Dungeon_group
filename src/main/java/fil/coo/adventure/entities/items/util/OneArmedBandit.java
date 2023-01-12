@@ -17,7 +17,13 @@ public class OneArmedBandit{
         String symbol3 = symbols[rand.nextInt(symbols.length)];
         
         System.out.println("Vous avez tiré le levier, voici les symboles sortis : ");
-        System.out.println(symbol1 + " " + symbol2 + " " + symbol3);
+        System.out.print("  ");
+        printSymbol(symbol1);
+        System.out.print("  ");
+        printSymbol(symbol2);
+        System.out.print("  ");
+        printSymbol(symbol3);
+        System.out.println();
         
         if (symbol1.equals(symbol2) && symbol2.equals(symbol3)) {
             System.out.println("Vous avez gagné !");
@@ -44,5 +50,24 @@ public class OneArmedBandit{
         }
     }
 
+    private void printSymbol(String symbol) {
+        switch(symbol) {
+            case "coeur":
+                System.out.print("coeur \u2764 ");
+                break;
+            case "éclair":
+                System.out.print("éclair \u26A1 ");
+                break;
+            case "épée":
+                System.out.print("épée \u2694 ");
+                break;
+            case "or":
+                System.out.print("or \uD83D\uDCB0 ");
+                break;
+            case "poison":
+                System.out.print("poison \u2620 ");
+                break;
+        }
+    }
 }
 
