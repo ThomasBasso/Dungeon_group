@@ -5,17 +5,16 @@ public abstract class GameCharacters {
 	protected int strength;
 	protected int gold;
 	protected String name;
-	
-	public GameCharacters() {
-		this.LifePoints = 0;
-		this.strength = 0;
-		this.gold = 0;
-	}
-	
-	public GameCharacters(int lP, int st) {
+
+	public GameCharacters(String name, int lP, int st, int gold) {
+		this.name = name;
 		this.LifePoints = lP;
 		this.strength = st;
-		this.gold = 0;
+		this.gold = gold;
+	}
+
+	public String getName() {
+		return name;
 	}
 	
 	public int getLifePoints() {

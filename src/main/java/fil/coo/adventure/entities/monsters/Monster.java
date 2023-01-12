@@ -8,10 +8,11 @@ import fil.coo.adventure.entities.monsters.util.*;
 import fil.coo.adventure.places.Dungeon;
 
 public abstract class Monster extends GameCharacters {
-	public Monster(int lP, int st) {
-		super(lP, st);
-		Random r = new Random();
-		this.gold = r.nextInt();
+	static Random rand = new Random();
+	static int randomNumber = rand.nextInt(15);
+
+	public Monster(String name, int lP, int st) {
+		super(name, lP, st, randomNumber);
 	}
 
 	/**
