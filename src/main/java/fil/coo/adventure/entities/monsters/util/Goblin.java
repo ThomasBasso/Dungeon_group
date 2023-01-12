@@ -4,6 +4,6 @@ import fil.coo.adventure.entities.monsters.Monster;
 
 public class Goblin extends Monster {
 	public Goblin() {
-		super(15, 5);
+		super("Goblin", 15, 5);
 	}
 }

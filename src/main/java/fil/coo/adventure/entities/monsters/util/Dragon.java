@@ -4,6 +4,6 @@ import fil.coo.adventure.entities.monsters.Monster;
 
 public class Dragon extends Monster {
 	public Dragon() {
-		super(100, 25);
+		super("Dragon", 100, 25);
 	}
 }

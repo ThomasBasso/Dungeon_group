@@ -4,6 +4,6 @@ import fil.coo.adventure.entities.monsters.Monster;
 
 public class ZombiesHord extends Monster {
 	public ZombiesHord() {
-		super(40, 5);
+		super("Zombie", 40, 5);
 	}
 }

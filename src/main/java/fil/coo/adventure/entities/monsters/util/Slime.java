@@ -4,6 +4,6 @@ import fil.coo.adventure.entities.monsters.Monster;
 
 public class Slime extends Monster {
 	public Slime() {
-		super(5, 0);
+		super("Slime", 5, 0);
 	}
 }
