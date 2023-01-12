@@ -1,6 +1,7 @@
 package fil.coo.adventure.utils;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -38,10 +39,10 @@ public class Fonctions {
      * @param player le joueur à enregistrer
      */
     public static void saveNewLine(Player player){
-        String s = System.lineSeparator() + player.getName()+"-"+player.getLifePoints()+"-"+player.getStrength()+"-"
-                +player.getDefense()+"-"+player.getGold();
+        String s = player.getName()+"-"+player.getLifePoints()+"-"+player.getStrength()+"-"
+                +player.getDefense()+"-"+player.getGold()+"-"+player.getInventoryNames()+"-"+player.getArmorsStatus()+"-"+player.getWeaponsStatus();
         try (PrintWriter writer = new PrintWriter(new FileWriter(path,true))){
-            writer.printf("%s",s);
+            writer.println(s);
             }
         catch (IOException e) {
             System.out.println("erreur");
@@ -58,6 +59,10 @@ public class Fonctions {
         return size != 0;
     }
 
+    /**
+     * Permet de récupérer la liste de toutes les parties enregistrées
+     * @return la liste de toutes les parties enregistrée
+     */
     public static ArrayList<Player> getAllGameSave() {
         ArrayList<Player> allPlayers = new ArrayList<>();
         Player player;
@@ -76,6 +81,27 @@ public class Fonctions {
         }
 
         return allPlayers;
+    }
+
+    /**
+     * Permet de supprimer une partie de notre choix
+     * @param player la partie à supprimer
+     */
+    public static void removeLine(Player player){
+        String s =  player.getName()+"-"+player.getLifePoints()+"-"+player.getStrength()+"-"
+                +player.getDefense()+"-"+player.getGold();
+        try {
+            File actual = new File(path);
+            File tmp = new File("_temp_");
+            PrintWriter writer = new PrintWriter(new FileWriter(tmp,true));
+            Files.lines(actual.toPath()).filter(line -> !line.contains(s)).forEach(writer::println);
+            //writer.flush();
+            writer.close();
+            tmp.renameTo(actual);
+        }
+        catch (IOException e) {
+            System.out.println("erreur");
+        }
     }
 
     public static int getArmorFromObject(String piece) {
