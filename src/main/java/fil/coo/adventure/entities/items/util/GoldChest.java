@@ -1,6 +1,7 @@
 package fil.coo.adventure.entities.items.util;
 
 import fil.coo.adventure.utils.Constant;
+import fil.coo.adventure.utils.Fonctions;
 import fil.coo.adventure.entities.Player;
 
 import java.util.Random;
@@ -22,7 +23,7 @@ public class GoldChest{
             if (player.getWeaponEquiped().get(piece)) {
                 System.out.println("Dommage ! Vous aviez déjà cet équipement !");
             } else {
-                int strengthBonus = getStrengthFromObject(piece);
+                int strengthBonus = Fonctions.getStrengthFromObject(piece);
                 System.out.println("Bravo ! Vous avez maintenant "+piece+" qui ajoute "+strengthBonus+" de force !");
                 player.getWeaponEquiped().replace(piece, true);
                 player.addStrength(strengthBonus);
@@ -35,55 +36,11 @@ public class GoldChest{
             if (player.getArmorEquiped().get(piece)) {
                 System.out.println("Dommage ! Vous aviez déjà cet équipement !");
             } else {
-                int armorBonus = getArmorFromObject(piece);
+                int armorBonus = Fonctions.getArmorFromObject(piece);
                 System.out.println("Bravo ! Vous avez maintenant "+piece+" qui ajoute "+armorBonus+" d'armure !");
                 player.getArmorEquiped().replace(piece, true);
                 player.addDefense(armorBonus);
             }
         }
-    }
-
-    public int getArmorFromObject(String piece) {
-        int armor;
-        switch (piece) {
-            case "Gauntlets":
-                armor = 4;
-                break;
-            case "Helmet":
-                armor = 6;
-                break;
-            case "Breast_plate":
-                armor = 8;
-                break;
-            case "Trousers":
-                armor = 10;
-                break;
-            case "Boots":
-                armor = 2;
-                break;
-            default:
-                armor = 0;
-                break;
-        }
-        return armor;
-    }
-
-    public int getStrengthFromObject(String piece) {
-        int strength;
-        switch (piece) {
-            case "dagger":
-                strength = 5;
-                break;
-            case "sword":
-                strength = 10;
-                break;
-            case "gun":
-                strength = 20;
-                break;
-            default:
-                strength = 0;
-                break;
-        }
-        return strength;
     }
 }

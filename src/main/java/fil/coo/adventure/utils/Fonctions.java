@@ -78,4 +78,48 @@ public class Fonctions {
         return allPlayers;
     }
 
+    public static int getArmorFromObject(String piece) {
+        int armor;
+        switch (piece) {
+            case "Gauntlets":
+                armor = 4;
+                break;
+            case "Helmet":
+                armor = 6;
+                break;
+            case "Breast_plate":
+                armor = 8;
+                break;
+            case "Trousers":
+                armor = 10;
+                break;
+            case "Boots":
+                armor = 2;
+                break;
+            default:
+                armor = 0;
+                break;
+        }
+        return armor;
+    }
+
+    public static int getStrengthFromObject(String piece) {
+        int strength;
+        switch (piece) {
+            case "dagger":
+                strength = 5;
+                break;
+            case "sword":
+                strength = 10;
+                break;
+            case "gun":
+                strength = 20;
+                break;
+            default:
+                strength = 0;
+                break;
+        }
+        return strength;
+    }
+
 }
