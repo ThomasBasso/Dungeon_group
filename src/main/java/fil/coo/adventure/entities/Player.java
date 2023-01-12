@@ -78,7 +78,11 @@ public class Player extends GameCharacters {
         }
         possible += "q";
 
+        System.out.println("Voulez avez actuellement "+getLifePoints()+" points de vie et "+getStrength()+" de force.");
+        System.out.println("Une potion de vie rend "+Constant.LIFE_POTION+" PV.");
+        System.out.println("Une potion de force donne "+Constant.STRENGHT_POTION+" de force.");
         System.out.println("Voulez avez en votre possession les consommables suivants :");
+
         String input;
         Scanner sc = new Scanner(System.in);
         do {
@@ -194,7 +198,6 @@ public class Player extends GameCharacters {
         for (Boolean armor : getArmorEquiped().values()) {
             armorsStatus += armor.toString() + ",";
         }
-        System.out.println("les armures status : " + armorsStatus);
         return armorsStatus;
     }
 
@@ -203,7 +206,6 @@ public class Player extends GameCharacters {
         for (Boolean weapon : getWeaponEquiped().values()) {
             weaponsStatus += weapon.toString() + ",";
         }
-        System.out.println("les weapons status : " + weaponsStatus);
         return weaponsStatus;
     }
 }
