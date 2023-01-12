@@ -35,14 +35,6 @@ public class Dungeon {
         this.actual_level = level;
     }
 
-    public void goToDungeon() {
-        switch (this.actual_level){
-            case EASY -> System.out.println("Easy");
-            case MEDIUM -> System.out.println("Medium");
-            case HARD -> System.out.println("Hard");
-        }
-    }
-
     /**
      * Permet de changer de niveau lorsque l'on termine un donjon
      * @return le prochain niveau du donjon
@@ -62,12 +54,12 @@ public class Dungeon {
 
     }
 
-    public TYPE getActual_level() {
-        return actual_level;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setActual_level(TYPE newLevel){
-        this.actual_level = newLevel;
+    public TYPE getActual_level() {
+        return actual_level;
     }
 
 }
