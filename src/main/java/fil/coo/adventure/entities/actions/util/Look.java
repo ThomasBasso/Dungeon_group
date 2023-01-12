@@ -1,10 +1,6 @@
 package fil.coo.adventure.entities.actions.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 import fil.coo.adventure.entities.items.Item;
 import fil.coo.adventure.entities.monsters.Monster;
@@ -53,10 +49,20 @@ public class Look {
 		this.execute(nextRoom);
 	}
 
+	/**
+	 * Permet de visualiser les monstres dans les rooms voisines
+	 * @param r la room principale
+	 */
 	public void execute(Room r) {
-		List<Monster> monsters = r.getMonsters();
-		List<Item> items = r.getItems();
-		System.out.println("Il y a " + monsters.size() + " monstres dans cette pièce.");
+		Map<Direction,Room> neighbours = r.getNeighbour();
+		for (Map.Entry<Direction, Room> entry : neighbours.entrySet()) {
+			List<Monster> monsters = entry.getValue().getMonsters();
+			StringBuilder nameMonster = new StringBuilder();
+			for (Monster monster : monsters)
+				nameMonster.append(monster.getName()).append(" ");
+			System.out.println("Il y a " + monsters.size() + " monstres ( " + nameMonster + " ) dans la pièce " + entry.getKey() + " .\n");
+		}
+		r.optionEndRoom();
 	}
 
 	public boolean isPossible(Room r) {

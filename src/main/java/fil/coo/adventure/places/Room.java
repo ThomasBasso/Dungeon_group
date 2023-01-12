@@ -3,13 +3,10 @@ package fil.coo.adventure.places;
 import java.util.*;
 
 import fil.coo.adventure.entities.Player;
-import fil.coo.adventure.entities.actions.Actions;
+import fil.coo.adventure.entities.actions.util.Look;
 import fil.coo.adventure.entities.monsters.Monster;
 import fil.coo.adventure.entities.items.Item;
-import fil.coo.adventure.entities.items.util.GoldChest;
-import fil.coo.adventure.entities.items.util.LifePotion;
-import fil.coo.adventure.entities.items.util.OneArmedBandit;
-import fil.coo.adventure.entities.items.util.StrengthPotion;
+import fil.coo.adventure.entities.items.util.*;
 import fil.coo.adventure.places.directions.Direction;
 import fil.coo.adventure.places.rooms.*;
 
@@ -67,6 +64,10 @@ public class Room {
 		this.neighbour.put(d, r);
 	}
 
+	public Map<Direction, Room> getNeighbour() {
+		return neighbour;
+	}
+
 	public Set<Direction> getPossibleDirections() {
 		return this.neighbour.keySet();
 	}
@@ -117,7 +118,6 @@ public class Room {
 
 	/**
 	 * Permet de réaliser les combats
-	 * 
 	 * @param currentRoom la room actuelle
 	 */
 	private void runRoom(Room currentRoom) {
@@ -134,22 +134,30 @@ public class Room {
 		} else {
 			System.out.println("Fin de la room " + indexRoom+"\n");
 			this.getEndRoomReward(player);
-			String result;
 			if (indexRoom < this.nbRoomMax) {
-				do {
-					System.out.println("\nQue voulez-vous faire ?\n 1 - Aller dans la room suivante \n " +
-							"2 - Regarder les monstres de la room suivante \n " +
-							"3 - Arrêter la partie");
-					Scanner scanner = new Scanner(System.in);
-					result = scanner.nextLine();
-				} while (!result.equals("1") && !result.equals("2") && !result.equals("3") && !result.equals("4"));
-				// if (result.equals("2")) {
-				// 	Actions.Look()
-				// }
-				if (result.equals("3")) {
-					this.stopGame = true;
-				}
+				optionEndRoom();
 			}
+		}
+	}
+
+	/**
+	 * Permet de définir les actions possibles à la fin d'une room
+	 */
+	public void optionEndRoom() {
+		String result;
+		do {
+			System.out.println("\nQue voulez-vous faire ?\n 1 - Aller dans la room suivante \n " +
+					"2 - Regarder les monstres de la room suivante \n " +
+					"3 - Arrêter la partie");
+			Scanner scanner = new Scanner(System.in);
+			result = scanner.nextLine();
+		} while (!result.equals("1") && !result.equals("2") && !result.equals("3") && !result.equals("4"));
+		if (result.equals("2")) {
+			Look look = new Look();
+			look.execute(this);
+		}
+		if (result.equals("3")) {
+			this.stopGame = true;
 		}
 	}
 
