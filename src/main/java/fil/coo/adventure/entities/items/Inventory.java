@@ -30,4 +30,8 @@ public class Inventory {
     public ArrayList<Item> getItems() {
 		return inventoryItems;
 	}
+
+	public void addItems(Item item) {
+		inventoryItems.add(item);
+	}
 }
