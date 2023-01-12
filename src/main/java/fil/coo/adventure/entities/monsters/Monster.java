@@ -9,7 +9,8 @@ import fil.coo.adventure.places.Dungeon;
 
 public abstract class Monster extends GameCharacters {
 	static Random rand = new Random();
-	static int randomNumber = rand.nextInt(15);
+	// monsters spawn with gold between 1 and 15
+	static int randomNumber = rand.nextInt(15)+1;
 
 	public Monster(String name, int lP, int st) {
 		super(name, lP, st, randomNumber);
