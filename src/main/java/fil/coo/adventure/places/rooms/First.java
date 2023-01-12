@@ -5,11 +5,10 @@ import fil.coo.adventure.places.*;
 
 public class First extends Room {
 
-
-    public First(Dungeon type){
+    public First(Dungeon type) {
         super(type);
         this.nbMonster = 2;
-        this.monsters = Monster.getRandomListMonsters(this.donjon.getActual_level(), nbMonster);
+        this.monsters = Monster.getRandomListMonsters(this.donjon.getCurrentLevel(), nbMonster);
     }
 
 }
