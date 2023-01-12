@@ -40,8 +40,12 @@ public abstract class GameCharacters {
 	public void attack(GameCharacters ennemy) {
 		ennemy.LooseLife(this.getStrength());
 		System.out.println("Vous avez infligé "+getStrength()+"à "+ennemy.getName());
-		if (ennemy.getLifePoints()>= 0)
+		if (ennemy.getLifePoints()>0) {
 			this.LooseLife(ennemy.getStrength());
 			System.out.println("L'ennemi vous a infligé "+ennemy.getStrength());
+			System.out.println("Il vous reste "+getLifePoints()+" life points.");
+		} else {
+			addGold(ennemy.getGold());
+		}
 	}
 }
