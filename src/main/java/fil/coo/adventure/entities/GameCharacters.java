@@ -37,9 +37,11 @@ public abstract class GameCharacters {
 		this.LifePoints -= st;
 	}
 	
-	public void attack(GameCharacters theOtherCharacterToAttack) {
-		theOtherCharacterToAttack.LooseLife(this.getStrength());
-		if (theOtherCharacterToAttack.getLifePoints() >= 0)
-			this.LooseLife(theOtherCharacterToAttack.getStrength());
+	public void attack(GameCharacters ennemy) {
+		ennemy.LooseLife(this.getStrength());
+		System.out.println("Vous avez infligé "+getStrength()+"à "+ennemy.getName());
+		if (ennemy.getLifePoints()>= 0)
+			this.LooseLife(ennemy.getStrength());
+			System.out.println("L'ennemi vous a infligé "+ennemy.getStrength());
 	}
 }
