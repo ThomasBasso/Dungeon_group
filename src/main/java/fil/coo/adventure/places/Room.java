@@ -219,6 +219,11 @@ public class Room {
 		return lose;
 	}
 
+	/**
+	 * Player has a chance to win a reward (Item/Equipment/Bonus)
+	 * 
+	 * @param player
+	 */
 	public void getEndRoomReward(Player player) {
 		Random rand = new Random();
 		int n = rand.nextInt(5); // Génère un nombre entre 0 et 5

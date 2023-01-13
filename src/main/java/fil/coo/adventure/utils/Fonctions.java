@@ -122,6 +122,10 @@ public class Fonctions {
 		}
 	}
 
+	/**
+	 * @param piece		Name of a armor object
+	 * @return Int		Number of armor it gives to the player
+	 */
 	public static int getArmorFromObject(String piece) {
 		int armor;
 		switch (piece) {
@@ -147,6 +151,10 @@ public class Fonctions {
 		return armor;
 	}
 
+	/**
+	 * @param piece			Name if a weapon object
+	 * @return	Int			Number of strenght it gives to the player
+	 */
 	public static int getStrengthFromObject(String piece) {
 		int strength;
 		switch (piece) {

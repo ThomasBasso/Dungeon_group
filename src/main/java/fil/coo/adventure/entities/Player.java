@@ -139,7 +139,7 @@ public class Player extends GameCharacters {
 
         System.out.println("Voulez avez actuellement "+getLifePoints()+" points de vie et "+getStrength()+" de force.");
         System.out.println("Une potion de vie rend "+Constant.LIFE_POTION+" PV.");
-        System.out.println("Une potion de force donne "+Constant.STRENGHT_POTION+" de force.");
+        System.out.println("Une potion de force donne "+Constant.STRENGHT_POTION+" de force.\n");
         System.out.println("Voulez avez en votre possession les consommables suivants :");
 
         String input;
@@ -166,16 +166,27 @@ public class Player extends GameCharacters {
         return this.name;
     }
 
+    /**
+	 * Add item
+     * @param item
+     */
     public void addItem(Item item) {
         if (inventory.getItems().size() < Constant.MAX_ITEMS) {
             this.inventory.getItems().add(item);
         }
     }
 
+    /**
+	 * remove item
+     * @param item
+     */
     public void dropItem(Item item) {
         this.inventory.getItems().remove(item);
     }
 
+    /**
+     * @return	A string containing names of Items separated by ','
+     */
     public String getInventoryNames() {
         String itemsNames = "";
         for (Item item : inventory.getItems()) {
@@ -231,6 +242,9 @@ public class Player extends GameCharacters {
         negativeStatuses.clear();
     }
 
+    /**
+     * Apply malus to the player for a number of round
+     */
     public void applyNegativeStatuses() {
         for (Poison status : negativeStatuses) {
             status.tick(this);
@@ -252,6 +266,9 @@ public class Player extends GameCharacters {
         return armorEquiped;
     }
 
+    /**
+     * @return A string containing names of armors equiped separated by ','
+     */
     public String getArmorsStatus() {
         String armorsStatus = "";
         for (Boolean armor : getArmorEquiped().values()) {
@@ -260,6 +277,9 @@ public class Player extends GameCharacters {
         return armorsStatus;
     }
 
+    /**
+     * @return A string containing names of weapons equiped separated by ','
+     */
     public String getWeaponsStatus() {
         String weaponsStatus = "";
         for (Boolean weapon : getWeaponEquiped().values()) {

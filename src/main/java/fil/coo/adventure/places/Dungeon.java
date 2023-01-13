@@ -57,10 +57,16 @@ public class Dungeon {
 
     }
 
+    /**
+     * @return the player
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * @return TYPE the current level
+     */
     public TYPE getCurrentLevel() {
         return current_level;
     }
