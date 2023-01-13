@@ -72,6 +72,17 @@ public class Room {
 		return this.neighbour.keySet();
 	}
 
+	/**
+	 * @return a string with the remaining directions seperated by a ','
+	 */
+	public String getStringPossibleDirections() {
+		String directions = "";
+		for (Direction di : getPossibleDirections()) {
+			directions += di + ",";
+		}
+		return directions;
+	}
+
 	public Room getNeighbour(Direction d) {
 		return this.neighbour.get(d);
 	}
@@ -80,29 +91,65 @@ public class Room {
 		return this.donjon;
 	}
 
+	public int getNbRoomMax() {
+		return nbRoomMax;
+	}
+
 	public void setNbRoomMax(int nbRoomMax) {
 		this.nbRoomMax = nbRoomMax;
 	}
 
+	public Player getPlayer() {
+		return player;
+	}
+
 	/**
 	 * Permet n'initialiser les voisins de notre room principale
+	 * 
+	 * @param player the player of the game to get his remaining directions
 	 */
-	public void initializeNeighbour() {
-		this.addNeighbour(Direction.W, new First(this.donjon));
-		this.addNeighbour(Direction.E, new Second(this.donjon));
-		this.addNeighbour(Direction.S, new Third(this.donjon));
-		this.nbRoomMax = this.neighbour.size();
+	public void initializeNeighbour(Player player) {
+		// if the player choose a saved game
+		if (player.getSavedDirections() != null) {
+			for (Direction di : player.getSavedDirections()) {
+				switch (di) {
+					case W:
+						this.addNeighbour(Direction.W, new First(this.donjon));
+						break;
+					case E:
+						this.addNeighbour(Direction.E, new Second(this.donjon));
+						break;
+					case S:
+						this.addNeighbour(Direction.S, new Third(this.donjon));
+						break;
+					default:
+						break;
+				}
+			}
+		} else { // if it is a new player
+			this.addNeighbour(Direction.W, new First(this.donjon));
+			this.addNeighbour(Direction.E, new Second(this.donjon));
+			this.addNeighbour(Direction.S, new Third(this.donjon));
+		}
+		// this.nbRoomMax = this.neighbour.size();
 	}
 
 	/**
 	 * Permet à l'utilisateur de choisir dans quelle room il souhaite aller
 	 */
 	public void chooseRoom() {
-		Set<Direction> directionsPossible = this.getPossibleDirections();
+		Set<Direction> directionsPossible;
+		// if the player choose a saved game
+		if (player.getSavedDirections() != null) {
+			directionsPossible = player.getSavedDirections();
+			player.setNullPossibleDirection();
+		} else {
+			directionsPossible = this.getPossibleDirections();
+		}
 		ArrayList<String> directionPossibleName = new ArrayList<>();
 		String result;
 		do {
-			System.out.println("Dans quelle direction souhaites tu aller ? ");
+			System.out.println("Dans quelle direction souhaites-tu aller ? ");
 			for (Direction d : directionsPossible) {
 				directionPossibleName.add(d.name());
 				System.out.println(d.name() + " - " + d);
@@ -118,6 +165,7 @@ public class Room {
 
 	/**
 	 * Permet de réaliser les combats
+	 * 
 	 * @param currentRoom la room actuelle
 	 */
 	private void runRoom(Room currentRoom) {
@@ -126,13 +174,13 @@ public class Room {
 				"\nVous être actuellement dans la room " + indexRoom + " sur " + this.nbRoomMax + ", Bon courage !");
 		while (!currentRoom.endFight()) {
 			Monster currentMonster = currentRoom.monsters.get(0);
-			currentRoom.playerChooseActionInFight(currentMonster);
-			System.out.println("Nombre d'adversaires restants dans la salle :" + currentRoom.monsters.size()+"\n");
+			currentRoom.playerChooseActionInFight(currentMonster, draw);
+			System.out.println("Nombre d'adversaires restants dans la salle :" + currentRoom.monsters.size() + "\n");
 		}
 		if (this.player.getLifePoints() <= 0) {
 			this.lose = true;
 		} else {
-			System.out.println("Fin de la room " + indexRoom+"\n");
+			System.out.println("Fin de la room " + indexRoom + "\n");
 			this.getEndRoomReward(player);
 			if (indexRoom < this.nbRoomMax) {
 				optionEndRoom();
@@ -166,8 +214,8 @@ public class Room {
 	 * 
 	 * @param monster le monstre actuel contre lequel se trouve le joueur
 	 */
-	public void playerChooseActionInFight(Monster monster) {
-		System.out.println("\nQuelle action souhaites tu réaliser ? \n 1 - Attaquer le monstre " + monster.getName() +
+	public void playerChooseActionInFight(Monster monster, DrawDongeon draw) {
+		System.out.println("\nQuelle action souhaites-tu réaliser ? \n 1 - Attaquer le monstre " + monster.getName() +
 				"\n 2 - Accéder à ton inventaire ");
 		Scanner scanner = new Scanner(System.in);
 		String result = scanner.nextLine();
@@ -179,7 +227,7 @@ public class Room {
 				}
 			}
 			case "2" -> this.player.askToUseItem();
-			default -> this.playerChooseActionInFight(monster);
+			default -> this.playerChooseActionInFight(monster, draw);
 		}
 	}
 

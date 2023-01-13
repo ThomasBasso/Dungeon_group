@@ -145,7 +145,7 @@ public class AdventureGame {
 			switch (value) {
 				case "1" -> {
 					this.dungeon = new Dungeon(this.player, nextLevel);
-					this.currentRoom.initializeNeighbour();
+					this.currentRoom.initializeNeighbour(player);
 					this.runGame();
 				}
 				case "2" -> this.optionEndGame();
@@ -170,14 +170,14 @@ public class AdventureGame {
 		if (this.player.getLifePoints() > 0 && this.dungeon.getNextLevel() != null) {
 			System.out.println();
 			System.out.println(
-					"Tu souhaites donc arrêter de jouer alors que tu viens de terminer le donjon, si tu le souhaites" +
-							"tu peux enregistrer ta partie pour la reprendre une prochaine fois. \n" +
-							" Veux-tu enregistrer ta partie avant de quitter ?  OUI ou NON");
+					"Tu souhaites arrêter de jouer, si tu le souhaites" +
+					"tu peux enregistrer ta partie pour la reprendre une prochaine fois. \n" +
+					"Veux-tu enregistrer ta partie avant de quitter ?  OUI ou NON");
 			Scanner scanner = new Scanner(System.in);
 			String result = scanner.nextLine().toUpperCase();
 			switch (result) {
 				case "OUI" -> {
-					Fonctions.saveNewLine(this.player);
+					Fonctions.saveNewLine(this.player, getCurrentRoom());
 					System.out.println("Enregistrement fini \nAu revoir " + new String(Character.toChars(0x1F44B)));
 				}
 				case "NON" -> System.out.println("Au revoir " + new String(Character.toChars(0x1F44B)));
