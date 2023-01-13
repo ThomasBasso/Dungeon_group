@@ -9,6 +9,7 @@ import fil.coo.adventure.entities.items.Item;
 import fil.coo.adventure.entities.items.util.*;
 import fil.coo.adventure.places.directions.Direction;
 import fil.coo.adventure.places.rooms.*;
+import fil.coo.adventure.utils.DrawDongeon;
 
 public class Room {
 	protected List<Monster> monsters;
@@ -16,11 +17,11 @@ public class Room {
 	protected Player player;
 	protected List<Item> items;
 	protected Map<Direction, Room> neighbour;
-	private int nbRoomMax = 0;
-
+	private int nbRoomMax = 3;
 	protected int nbMonster;
 	private boolean lose = false;
 	private boolean stopGame = false;
+	private DrawDongeon draw;
 
 	public Room() {
 		this.monsters = new ArrayList<Monster>();
@@ -170,10 +171,12 @@ public class Room {
 	 */
 	private void runRoom(Room currentRoom) {
 		int indexRoom = this.nbRoomMax - this.neighbour.size();
+		this.draw = new DrawDongeon(currentRoom, indexRoom);
 		System.out.println(
 				"\nVous être actuellement dans la room " + indexRoom + " sur " + this.nbRoomMax + ", Bon courage !");
 		while (!currentRoom.endFight()) {
 			Monster currentMonster = currentRoom.monsters.get(0);
+			draw.displayMap();
 			currentRoom.playerChooseActionInFight(currentMonster, draw);
 			System.out.println("Nombre d'adversaires restants dans la salle :" + currentRoom.monsters.size() + "\n");
 		}
@@ -224,6 +227,7 @@ public class Room {
 				player.attack(monster);
 				if (monster.getLifePoints() < 1) {
 					this.monsters.remove(monster);
+					draw.updateMap();
 				}
 			}
 			case "2" -> this.player.askToUseItem();
