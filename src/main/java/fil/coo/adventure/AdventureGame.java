@@ -30,7 +30,7 @@ public class AdventureGame {
 	 */
 	public AdventureGame(Player player) {
 		this.player = player;
-		this.dungeon = new Dungeon(this.player);
+		this.dungeon = new Dungeon(this.player, this.player.getDungeon());
 		this.currentRoom = new Room(this.dungeon);
 	}
 

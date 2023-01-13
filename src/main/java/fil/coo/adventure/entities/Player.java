@@ -3,9 +3,13 @@ package fil.coo.adventure.entities;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 import fil.coo.adventure.entities.items.Inventory;
 import fil.coo.adventure.entities.items.Item;
+import fil.coo.adventure.places.Dungeon;
+import fil.coo.adventure.places.Dungeon.TYPE;
+import fil.coo.adventure.places.directions.Direction;
 import fil.coo.adventure.utils.Constant;
 import fil.coo.adventure.utils.Fonctions;
 
@@ -18,11 +22,13 @@ public class Player extends GameCharacters {
     private Inventory inventory;
     private HashMap<String, Boolean> armorEquiped = new HashMap<>();
     private HashMap<String, Boolean> weaponEquiped = new HashMap<>();
+	private HashMap<Direction, Boolean> possibleDirection;
+	private TYPE dungeon;
 
-    /**
-     * Permet de créer un joueur uniquement en lui attribuant un nom
+	/**
+     * Create a player with a name
      * 
-     * @param name le nom du joueur
+     * @param name name
      */
     public Player(String name) {
         super(name, 100, 10, 20);
@@ -38,8 +44,21 @@ public class Player extends GameCharacters {
         }
     }
 
+    /**
+	 * Create a player based on saved statistics
+     * @param name		name
+     * @param life		life point
+     * @param strenght	strenght
+     * @param defense	armor
+     * @param gold		gold
+     * @param items		items
+     * @param armor		armors equiped
+     * @param weapon	weapon equiped
+     * @param directions	Directions remaining
+     * @param donjon	Current dungeon
+     */
     public Player(String name, int life, int strenght, int defense, int gold, String items, String armor,
-            String weapon) {
+            String weapon, String directions, String donjon) {
         super(name, life, strenght, gold);
         this.defense = defense;
         this.inventory = new Inventory(items);
@@ -63,8 +82,48 @@ public class Player extends GameCharacters {
             }
             i++;
         }
+
+		String[] direc = directions.split(",");
+		possibleDirection = new HashMap<>();
+		for (String direction : direc) {
+			switch (direction) {
+				case "east":
+					possibleDirection.put(Direction.E, true);
+					break;
+				case "west":
+					possibleDirection.put(Direction.W, true);
+					break;
+				case "south":
+					possibleDirection.put(Direction.S, true);
+					break;
+				case "north":
+					possibleDirection.put(Direction.N, true);
+					break;
+				default:
+					break;
+			}
+		}
+
+		switch (donjon) {
+			case "EASY":
+				dungeon = Dungeon.TYPE.EASY;
+				break;
+			case "MEDIUM":
+				dungeon = Dungeon.TYPE.MEDIUM;
+				break;
+			case "HARD":
+				dungeon = Dungeon.TYPE.HARD;
+				break;
+			default:
+				break;
+		}
     }
 
+
+    /**
+     * Ask a player if he wants to use a item
+	 * If yes, removes it from inventory and apply effects
+     */
     public void askToUseItem() {
         ArrayList<Item> consoItems = inventory.getItems();
         int choix = 0;
@@ -208,6 +267,24 @@ public class Player extends GameCharacters {
         }
         return weaponsStatus;
     }
+
+	/**
+	 * @return A set of the remaining directions
+	 */
+	public Set<Direction> getSavedDirections() {
+		if (possibleDirection!=null) {
+			return possibleDirection.keySet();
+		}
+		return null;
+	}
+
+	public void setNullPossibleDirection() {
+		this.possibleDirection = null;
+	}
+
+	public TYPE getDungeon() {
+		return dungeon;
+	}
 
 	/**
 	 * Player attacks a monster and gets hit back if the monster is still alive
