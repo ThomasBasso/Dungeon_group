@@ -7,16 +7,18 @@ import fil.coo.adventure.utils.Constant;
 public class StrengthPotion extends Item {
     private int boostDuration = Constant.STRENGHT_POTION_DURATION;
 
-	//Définit la durée du gain de force par 3 attaques
+	// Constructeur
     public StrengthPotion() {
         super("Potion de force", 0, Constant.STRENGHT_POTION, 50);
     }
 
     @Override
     public void isUsedBy(Player player) {
-		// Add strenght to the player
+		// Ajoute de la force au joueur à sa force actuelle temporairement
         player.setStrength(player.getStrength()+this.getStrenght());
+        // Baisse la durée de la force en fonction de la durée du boost
         player.setBoostDuration(boostDuration);
+        // Jette l'item de l'inventaire
         player.dropItem(this);
     }
 }
