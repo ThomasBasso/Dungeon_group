@@ -9,6 +9,7 @@ import fil.coo.adventure.entities.items.Item;
 import fil.coo.adventure.entities.items.util.*;
 import fil.coo.adventure.places.directions.Direction;
 import fil.coo.adventure.places.rooms.*;
+import fil.coo.adventure.utils.Constant;
 import fil.coo.adventure.utils.DrawDongeon;
 
 public class Room {
@@ -292,13 +293,21 @@ public class Room {
 				break;
 			case 2:
 				System.out.println("La salle contenait une potion !");
-				System.out.println("Vous avez gagné une potion de vie.");
-				player.getInventory().addItems(new LifePotion());
+				if (player.getInventory().getItems().size() < Constant.MAX_ITEMS) {
+					System.out.println("Vous avez gagné une potion de vie.");
+					player.getInventory().addItems(new LifePotion());
+				} else {
+					System.out.println("Vous avez déjà le nombre maximum de potions !");
+				}
 				break;
 			case 3:
 				System.out.println("La salle contenait une potion !");
-				System.out.println("Vous avez gagné une potion de force.");
-				player.getInventory().addItems(new StrengthPotion());
+				if (player.getInventory().getItems().size() < Constant.MAX_ITEMS) {
+					System.out.println("Vous avez gagné une potion de force.");
+					player.getInventory().addItems(new StrengthPotion());
+				} else {
+					System.out.println("Vous avez déjà le nombre maximum de potions !");
+				}
 				break;
 			case 4:
 				System.out.println("Aucun objet n'apparaît.");
