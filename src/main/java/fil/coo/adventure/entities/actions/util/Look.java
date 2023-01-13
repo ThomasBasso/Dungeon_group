@@ -14,15 +14,17 @@ public class Look {
 	protected Map<Direction, Room> neighbour;
 	private int nbRoomMax = 0;
 
-
+	// 
 	public Set<Direction> getPossibleDirections() {
 		return this.neighbour.keySet();
 	}
 
+	// Donne les directions possibles
 	public Room getNeighbour(Direction d) {
 		return this.neighbour.get(d);
 	}
 
+	// Initialise les directions possibles
 	public void initializeNeighbour(Room r){
 	r.addNeighbour(Direction.W, new First(r.getDonjon()));
 	r.addNeighbour(Direction.N, new Second(r.getDonjon()));
@@ -30,6 +32,7 @@ public class Look {
 	r.setNbRoomMax(this.neighbour.size());
 	}
 
+	// Choisit la room suivante
 	public void chooseRoom() {
 		Set<Direction> directionPossible = this.getPossibleDirections();
 		ArrayList<String> directionPossibleName = new ArrayList<>();
@@ -50,7 +53,7 @@ public class Look {
 	}
 
 	/**
-	 * Permet de visualiser les monstres dans les rooms voisines
+	 * Visualise les monstres dans les salles voisines
 	 * @param r la room principale
 	 */
 	public void execute(Room r) {

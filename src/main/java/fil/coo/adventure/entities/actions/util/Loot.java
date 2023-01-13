@@ -10,6 +10,7 @@ public class Loot {
 	public void execute(Room r, Player p){
 		List<Item> items = r.getItems();
 
+		// Récupère les items dans la room
 		for(Item i :items){
 			System.out.println("Vous avez trouvé " + i.toString());
 			i.isUsedBy(p);
