@@ -6,15 +6,21 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import fil.coo.adventure.entities.Player;
+import fil.coo.adventure.places.Room;
 
 public class Fonctions {
 	static String path = Constant.PLAYER_FILE;
 
+	/**
+	 * Save player statistics in a file so he can load his profile at launch of the game
+	 * @param player
+	 * @throws IOException
+	 */
 	public static void savePlayerInfo(Player player) throws IOException {
 		try (FileWriter writer = new FileWriter(path)) {
 			writer.write(player.getName() + "-" + player.getLifePoints() + "-" + player.getStrength() + "-"
 					+ player.getDefense() + "-" + player.getGold() + "-" + player.getInventoryNames() + "-"
-					+ player.getArmorsStatus() + "-" + player.getWeaponsStatus());
+					+ player.getArmorsStatus() + "-" +player.getWeaponsStatus()+"-");
 			writer.flush();
 			writer.close();
 		} catch (IOException e) {
@@ -23,6 +29,10 @@ public class Fonctions {
 		}
 	}
 
+	/**
+	 * @return A new player with loaded statistics
+	 * @throws IOException
+	 */
 	public static Player getPlayerInfos() throws IOException {
 		String[] values;
 		Player player;
@@ -33,7 +43,7 @@ public class Fonctions {
 
 		values = line.split("-");
 		player = new Player(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]),
-				Integer.parseInt(values[3]), Integer.parseInt(values[4]), values[5], values[6], values[7]);
+				Integer.parseInt(values[3]), Integer.parseInt(values[4]), values[5], values[6], values[7], values[8], values[9]);
 		return player;
 	}
 
@@ -42,10 +52,10 @@ public class Fonctions {
 	 * 
 	 * @param player le joueur à enregistrer
 	 */
-	public static void saveNewLine(Player player) {
+	public static void saveNewLine(Player player, Room room) {
 		String s = player.getName() + "-" + player.getLifePoints() + "-" + player.getStrength() + "-"
 				+ player.getDefense() + "-" + player.getGold() + "-" + player.getInventoryNames() + "-"
-				+ player.getArmorsStatus() + "-" + player.getWeaponsStatus();
+				+ player.getArmorsStatus() + "-" + player.getWeaponsStatus()+"-"+room.getStringPossibleDirections()+"-"+room.getDonjon().getCurrentLevel();
 		try (PrintWriter writer = new PrintWriter(new FileWriter(path, true))) {
 			writer.println(s);
 			writer.close();
@@ -77,10 +87,10 @@ public class Fonctions {
 			FileInputStream file = new FileInputStream(path);
 			Scanner scanner = new Scanner(file);
 			while (scanner.hasNextLine()) {
-				String[] elementPlayer = scanner.nextLine().split("-");
-				player = new Player(elementPlayer[0], Integer.parseInt(elementPlayer[1]),
-						Integer.parseInt(elementPlayer[2]), Integer.parseInt(elementPlayer[3]),
-						Integer.parseInt(elementPlayer[4]), elementPlayer[5], elementPlayer[6], elementPlayer[7]);
+				String[] infos = scanner.nextLine().split("-");
+				player = new Player(infos[0], Integer.parseInt(infos[1]),
+						Integer.parseInt(infos[2]), Integer.parseInt(infos[3]),
+						Integer.parseInt(infos[4]), infos[5], infos[6], infos[7], infos[8], infos[9]);
 				allPlayers.add(player);
 			}
 			scanner.close();
