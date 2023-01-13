@@ -34,6 +34,7 @@ public class Player extends GameCharacters {
         super(name, 100, 10, 20);
         // Player starts a game with one LifePotion
         this.inventory = new Inventory("Potion de vie");
+		this.originalStrength = this.strength;
 
         for (String armorItem : Constant.ARMOR) {
             armorEquiped.put(armorItem, false);
@@ -62,6 +63,7 @@ public class Player extends GameCharacters {
         super(name, life, strenght, gold);
         this.defense = defense;
         this.inventory = new Inventory(items);
+		this.originalStrength = this.strength;
 
         String[] armorInfos = armor.split(",");
         int i = 0;
