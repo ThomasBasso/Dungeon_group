@@ -36,18 +36,4 @@ public abstract class GameCharacters {
 	public void LooseLife(int st) {
 		this.LifePoints -= st;
 	}
-	
-	public void attack(GameCharacters ennemy) {
-		ennemy.LooseLife(this.getStrength());
-		System.out.println("\nVous avez infligé "+getStrength()+" à "+ennemy.getName());
-		if (ennemy.getLifePoints()>0) {
-			System.out.println("Il reste "+ennemy.getLifePoints()+" PV au "+ennemy.getName());;
-			this.LooseLife(ennemy.getStrength());
-			System.out.println("\nL'ennemi vous a infligé "+ennemy.getStrength());
-			System.out.println("Il vous reste "+getLifePoints()+" life points.\n");
-		} else {
-			System.out.println("Vous avez tué l'ennemi ! Vous lui volez ses "+ennemy.getGold()+" pièces d'or !\n");
-			addGold(ennemy.getGold());
-		}
-	}
 }

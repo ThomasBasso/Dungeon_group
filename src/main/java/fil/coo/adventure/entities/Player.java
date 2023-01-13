@@ -208,4 +208,25 @@ public class Player extends GameCharacters {
         }
         return weaponsStatus;
     }
+
+	/**
+	 * Player attacks a monster and gets hit back if the monster is still alive
+	 * If the monster dies, player gets his gold
+	 * @param ennemy	The monster attacked
+	 */
+	public void attack(GameCharacters ennemy) {
+		ennemy.LooseLife(this.getStrength());
+		System.out.println("\nVous avez infligé "+getStrength()+" à "+ennemy.getName());
+		this.decrementBoostDuration();
+
+		if (ennemy.getLifePoints()>0) {
+			System.out.println("Il reste "+ennemy.getLifePoints()+" PV au "+ennemy.getName());;
+			this.LooseLife(ennemy.getStrength());
+			System.out.println("\nL'ennemi vous a infligé "+ennemy.getStrength());
+			System.out.println("Il vous reste "+getLifePoints()+" life points.\n");
+		} else {
+			System.out.println("Vous avez tué l'ennemi ! Vous lui volez ses "+ennemy.getGold()+" pièces d'or !\n");
+			addGold(ennemy.getGold());
+		}
+	}
 }
