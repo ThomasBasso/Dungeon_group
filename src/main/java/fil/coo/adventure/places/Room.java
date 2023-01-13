@@ -112,7 +112,7 @@ public class Room {
 	 */
 	public void initializeNeighbour(Player player) {
 		// if the player choose a saved game
-		if (player.getSavedDirections() != null) {
+		if (player.getSavedDirections() != null && player.getSavedDirections().size() > 0) {
 			for (Direction di : player.getSavedDirections()) {
 				switch (di) {
 					case W:
@@ -140,14 +140,7 @@ public class Room {
 	 * Permet à l'utilisateur de choisir dans quelle room il souhaite aller
 	 */
 	public void chooseRoom() {
-		Set<Direction> directionsPossible;
-		// if the player choose a saved game
-		if (player.getSavedDirections() != null) {
-			directionsPossible = player.getSavedDirections();
-			player.setNullPossibleDirection();
-		} else {
-			directionsPossible = this.getPossibleDirections();
-		}
+		Set<Direction> directionsPossible = this.getPossibleDirections();
 		ArrayList<String> directionPossibleName = new ArrayList<>();
 		String result;
 		do {
