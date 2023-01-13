@@ -2,7 +2,6 @@ package fil.coo.adventure.entities.actions.util;
 
 import java.util.*;
 
-import fil.coo.adventure.entities.items.Item;
 import fil.coo.adventure.entities.monsters.Monster;
 import fil.coo.adventure.places.Room;
 import fil.coo.adventure.places.directions.Direction;
