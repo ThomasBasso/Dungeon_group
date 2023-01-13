@@ -53,9 +53,13 @@ public class Fonctions {
 	 * @param player le joueur à enregistrer
 	 */
 	public static void saveNewLine(Player player, Room room) {
+		String donjon = room.getDonjon().getCurrentLevel().toString();
+		if (room.getStringPossibleDirections()=="") {
+			donjon = room.getDonjon().getNextLevel().toString();
+		}
 		String s = player.getName() + "-" + player.getLifePoints() + "-" + player.getStrength() + "-"
 				+ player.getDefense() + "-" + player.getGold() + "-" + player.getInventoryNames() + "-"
-				+ player.getArmorsStatus() + "-" + player.getWeaponsStatus()+"-"+room.getStringPossibleDirections()+"-"+room.getDonjon().getCurrentLevel();
+				+ player.getArmorsStatus() + "-" + player.getWeaponsStatus()+"-"+room.getStringPossibleDirections()+"-"+donjon;
 		try (PrintWriter writer = new PrintWriter(new FileWriter(path, true))) {
 			writer.println(s);
 			writer.close();
